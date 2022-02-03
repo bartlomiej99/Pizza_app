@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Koszyk</title>
+</head>
+    <body>
+        <a href="/">Home page</a>
+        <h2>Cart</h2>
+        <form method="post" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Send">
+        </form>
+            <p><strong>Subject</strong>: {{ subject }}<br></p>
+            <p><strong>From</strong>: {{ email }}</p>
+            <p><strong>Message</strong>: {{ message }}</p>
+            {{ info }}
+    </body>
+</html>
+
+

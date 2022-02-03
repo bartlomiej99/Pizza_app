@@ -1,0 +1,124 @@
+{% extends "admin.html" %}
+{% block content %}
+    <div class="container-lg">
+        <div class="row fadeIn">
+            <div class="col-6 offset-3">
+                <div class="mt-4">
+                <h2>Add pizza to the menu</h2>
+                </div>
+                <div class="text-start mt-4 col-8">
+                    <form method="post">
+                        {% csrf_token %}
+                        <label for="pizza" class="form-label">Name:</label>
+                        <input type="text" name="name" class="form-control" id="pizza" placeholder="Pizza name">
+                        <div class="mt-4 mb-4">
+                            <label for="price" class="form-label">Price in zł:</label>
+                            <input type="number" step="0.01" name="price" class="form-control" id="price" placeholder="Price">
+                        </div>
+                        <div class="mb-3">
+                            <label class="mb-3">Hold the Ctrl button (Windows) or Command (Mac) to select multiple options:</label>
+                            {{ form.toppings }}<br>
+                        </div>
+                        <label class="form-label">Pizza Size:
+                            <select name="size" class="form-select mt-2 mb-3">
+                                <option value="60">60cm</option>
+                                <option value="50">50cm</option>
+                                <option value="40">40cm</option>
+                                <option value="30">30cm</option>
+                            </select>
+                        </label><br>
+                        <div class="text-start mt-4 pb-5">
+                            <input type="submit" value="Save">
+                        </div>
+                        <div class="mt-5">
+                            {{ info }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Footer -->
+<footer class="text-center text-lg-start bg-light text-muted">
+  <!-- Section: Social media -->
+  <section
+    class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+  >
+    <!-- Left -->
+    <div class="me-5 d-none d-lg-block">
+      <span>Get connected with us on social networks:</span>
+    </div>
+    <!-- Left -->
+
+    <!-- Right -->
+    <div>
+      <a href="" class="me-4 text-reset">
+        <i class="bi bi-facebook"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="bi bi-twitter"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="bi bi-google"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="bi bi-instagram"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="bi bi-linkedin"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="bi bi-github"></i>
+      </a>
+    </div>
+    <!-- Right -->
+  </section>
+  <!-- Section: Social media -->
+
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-3z col-xl-4 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem"></i>Company name
+          </h6>
+          <p>
+            Pizza Ełk
+          </p>
+        </div>
+
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Contact
+          </h6>
+          <p><i class="bi bi-house-fill me-3"></i> Ełk, 19-300, Poland</p>
+          <p>
+            <i class="bi bi-envelope-fill me-3"></i>
+            pizzaelk@o2.pl
+          </p>
+          <p><i class="bi bi-telephone-fill me-3"></i>
+              <a class="text-muted" style="text-decoration: none;" href="tel:+48 509-532-900">+48 509-532-900</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    © 2022 Pizza Ełk, Project and realization by Bartłomiej Wiśniewski
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+{% endblock %}
+
+
