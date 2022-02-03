@@ -20,9 +20,12 @@ class HomePageView(View):
         return render(request, 'base.html', {'time': time})
 
 
-class AdminPageView(View):
+class AdminPageView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'admin.html')
+        if request.user.is_superuser:
+            return render(request, 'admin.html')
+        else:
+            return render(request, '403.html')
 
 
 class AboutUsView(View):
@@ -152,10 +155,13 @@ class PizzaDeleteView(PermissionRequiredMixin, View):
             return render(request, 'pizza_delete.html', {'form': form, 'info': 'Wypełnij poprawnie formularz!'})
 
 
-class ToppingView(View):
+class ToppingView(LoginRequiredMixin, View):
     def get(self, request):
-        toppings = Topping.objects.all().order_by('name_topping')
-        return render(request, 'toppings.html', {'toppings': toppings})
+        if request.user.is_superuser:
+            toppings = Topping.objects.all().order_by('name_topping')
+            return render(request, 'toppings.html', {'toppings': toppings})
+        else:
+            return render(request, '403.html')
 
 
 class ToppingAddView(PermissionRequiredMixin, View):
