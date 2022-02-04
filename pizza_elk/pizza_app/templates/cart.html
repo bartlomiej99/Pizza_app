@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Koszyk</title>
+</head>
+    <body>
+        <h2>Koszyk</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Pizza title</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Pizza Price</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for order_pizza in cart.pizzas.all %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <td>{{ order_pizza.pizza_order.name }}</td>
+                <td>{{ order_pizza.pizza_order.price }}</td>
+                <td>{{ order_pizza.quantity }}</td>
+                <td>
+                    {{ order_pizza.get_total_pizza_order_price }}zł
+                    <button name="delete"><a style="color: red" href="/cart-pizza-delete/{{ order_pizza.pizza_order.id }}">X</a></button>
+                    <i class="float-right"></i>
+                </td>
+                <tr>
+                {% empty %}
+                </tr>
+                <tr>
+                    <td colspan="5">Your cart is empty</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                    <a href="/menu/">Continue shopping</a>
+                    </td>
+            </tr>
+                {% endfor %}
+            <tr>
+                <td colspan="4"><b>Order Total</b></td>
+                <td><b>{{ cart.get_total_price }}</b></td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <a href="/checkout/">Proceed to checkout</a>
+                    <a href="/menu/">Continue shopping</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

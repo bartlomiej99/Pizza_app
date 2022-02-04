@@ -1,0 +1,28 @@
+{% extends "toppings.html" %}
+{% block content %}
+    <body>
+        <div class="container-lg">
+            <div class="row fadeIn">
+                <div class="col-4 offset-3">
+                    <div class="mt-4">
+                        <h2>Topping Name:</h2>
+                    </div>
+                    <div class="text-start mt-4">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.name_topping }}
+                            <div class="mt-4 mb-4">
+                                <label for="price" class="form-label">Price in zł:</label>
+                                <input type="number" step="0.01" name="price" class="form-control" id="price" placeholder="Price">
+                            </div>
+                            <div class="text-start mt-4 pb-5">
+                            <button type="submit" class="btn btn-outline-dark">Edit topping</button>
+                            </div>
+                        </form>
+                        {{ info }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}
