@@ -15,12 +15,14 @@ from django.utils.html import strip_tags
 
 
 class HomePageView(View):
+    """ Home page shows all the links to different views """
     def get(self, request):
         time = timezone.now()
         return render(request, 'base.html', {'time': time})
 
 
 class AdminPageView(LoginRequiredMixin, View):
+    """ Admin panel shows up if the person is logged in as admin. The View shows admin panel page"""
     def get(self, request):
         if request.user.is_superuser:
             return render(request, 'admin.html')
@@ -29,11 +31,14 @@ class AdminPageView(LoginRequiredMixin, View):
 
 
 class AboutUsView(View):
+    """ About us page shows all the information about the pizza place and how is it done in polish language"""
     def get(self, request):
         return render(request, 'about_us.html')
 
 
 class CustomerAddView(View):
+    """ After entering the site by method GET shows empty registration form,
+     after entering the method POST form saves and sends information to the database if it is correct"""
     def get(self, request):
         form = CustomerAddForm()
         return render(request, 'add_customer.html', {'form': form})
@@ -60,6 +65,8 @@ class CustomerAddView(View):
 
 
 class LoginView(View):
+    """ After entering the login site by method GET shows empty form
+     and method POST sends information and if the data is correct logs the user on page"""
     def get(self, request):
         form = LoginForm()
         return render(request, 'login.html', {'form': form})
@@ -79,12 +86,16 @@ class LoginView(View):
 
 
 class LogoutView(LoginRequiredMixin, View):
+    """ Method GET logs out current user"""
     def get(self, request):
         logout(request)
         return redirect('/')
 
 
 class CustomerEditView(LoginRequiredMixin, View):
+    """ Method GET shows empty form
+    and method POST gets current login user by id,
+    changes all the information that user wants to change and then saves it also redirects user to login again"""
     def get(self, request):
         form = CustomerEditForm()
         return render(request, 'customer_edit.html', {'form': form})
@@ -104,6 +115,7 @@ class CustomerEditView(LoginRequiredMixin, View):
 
 
 class MenuView(View):
+    """ Menu View get all the pizzas from the database """
     def get(self, request):
         pizza = Pizza.objects.filter(size=30).order_by('id')
         pizzas = Pizza.objects.all().order_by('id')
@@ -111,6 +123,8 @@ class MenuView(View):
 
 
 class PizzaCreateView(PermissionRequiredMixin, View):
+    """ Permission is needed to enter this site method GET shows empty pizza create form,
+    method POST create new pizza and saves all information to database """
     permission_required = 'pizza_app.add_pizza'
     permission_denied_message = 'You have not permission to create new pizza!'
 
@@ -134,6 +148,8 @@ class PizzaCreateView(PermissionRequiredMixin, View):
 
 
 class PizzaDeleteView(PermissionRequiredMixin, View):
+    """ If user has permissions, by method GET he will see empty pizza delete form,
+    after entering POST method pizza will be deleted from the database """
     permission_required = 'pizza_app.delete_pizza'
     permission_denied_message = "You haven't got permission to delete existing pizza!"
 
@@ -156,6 +172,7 @@ class PizzaDeleteView(PermissionRequiredMixin, View):
 
 
 class ToppingView(LoginRequiredMixin, View):
+    """ To enter by method GET user has to be superuser and the VIew shows all toppings """
     def get(self, request):
         if request.user.is_superuser:
             toppings = Topping.objects.all().order_by('name_topping')
@@ -165,6 +182,8 @@ class ToppingView(LoginRequiredMixin, View):
 
 
 class ToppingAddView(PermissionRequiredMixin, View):
+    """ Only user with permission can see this View, method GET shows empty form,
+    method POST create new topping only if user has permission to create new topping """
     permission_required = 'pizza_app.add_topping'
     permission_denied_message = "You haven't got permission to add new topping!"
 
@@ -186,6 +205,8 @@ class ToppingAddView(PermissionRequiredMixin, View):
 
 
 class ToppingEditView(PermissionRequiredMixin, View):
+    """ Only user with permission can see this View, method GET shows empty form,
+    method POST edit topping that user choose only if user has permission to edit topping """
     permission_required = 'pizza_app.change_topping'
     permission_denied_message = "You haven't got permission to edit toppings!"
 
@@ -209,6 +230,8 @@ class ToppingEditView(PermissionRequiredMixin, View):
 
 
 class ToppingDeleteView(PermissionRequiredMixin, View):
+    """ Only user with permission can see this View, method GET shows empty form,
+        method POST delete topping only if user has permission to delete topping """
     permission_required = 'pizza_app.delete_topping'
     permission_denied_message = "You haven't got permission to delete topping!"
 
@@ -231,6 +254,7 @@ class ToppingDeleteView(PermissionRequiredMixin, View):
 
 
 class DeletePizzaFromCartView(LoginRequiredMixin, View):
+    """ Only logged user is able to see this page, if user click on "X" in cart than it deletes pizza from his cart"""
     def get(self, request, order_pizza_id):
         user = request.user
         pizza = get_object_or_404(Pizza, id=order_pizza_id)
@@ -254,6 +278,8 @@ class DeletePizzaFromCartView(LoginRequiredMixin, View):
 
 
 class AddToCartView(LoginRequiredMixin, View):
+    """ Method GET shows empty form and method POST saves information, create OrderPizza object, filter through carts,
+    and find cart that is current user log in than add it to the cart and redirects to order summary"""
     def get(self, request, pizza_name):
         form = AddToCartForm()
         pizza = Pizza.objects.filter(name=pizza_name, size=30)
@@ -288,6 +314,7 @@ class AddToCartView(LoginRequiredMixin, View):
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
+    """ This View filter through carts and find current user log in cart show all the information about order"""
     def get(self, request):
         try:
             cart = Cart.objects.get(customer=request.user, ordered=False)
@@ -304,6 +331,10 @@ class OrderSummaryView(LoginRequiredMixin, View):
 
 
 class CheckoutView(LoginRequiredMixin, View):
+    """ Method GET show empty form and show cart with all pizzas,
+    method POST saves information from form,
+    create BillingAddress object and saves it to current user,
+    than sends all the info about order to pizza site email"""
     def get(self, request):
         form = CheckoutForm()
         cart = Cart.objects.get(customer=request.user, ordered=False)
@@ -355,6 +386,7 @@ class CheckoutView(LoginRequiredMixin, View):
 
 
 class OrdersView(PermissionRequiredMixin, LoginRequiredMixin, View):
+    """ Only user that has permission can see this View, page shows all orders created """
     permission_required = 'pizza_app.view_cart'
     permission_denied_message = "You don't have permission to see orders!"
 
@@ -366,6 +398,7 @@ class OrdersView(PermissionRequiredMixin, LoginRequiredMixin, View):
 
 
 class OrderView(LoginRequiredMixin, View):
+    """ View shows details about order """
     def get(self, request, cart_id):
         cart = Cart.objects.get(id=cart_id)
         total = 0
@@ -375,6 +408,7 @@ class OrderView(LoginRequiredMixin, View):
 
 
 class ContactView(View):
+    """ Method GET show empty contact form, method POST saves info to html content and sends it to pizza email site """
     def get(self, request):
         form = ContactForm()
         return render(request, 'contact.html', {'form': form})
