@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Photo Model</title>
+</head>
+    <body>
+    <ul>
+        <li>
+            <a href="/">Home page</a>
+        </li>
+    </ul>
+        <h2>Add new photo</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Add Photo">
+        </form>
+    </body>
+</html>

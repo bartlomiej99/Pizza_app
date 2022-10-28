@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+    <body>
+    <ul>
+        <li>
+            <a href="/photo-add/">Add Photo</a>
+        </li>
+        <li>
+            <a href="/photo-delete/">Delete Photo</a>
+        </li>
+        <li>
+            <a href="/photo-edit/">Edit Photo</a>
+        </li>
+        <li>
+            <a href="/api-filter/">Info list</a>
+        </li>
+        <li>
+            <a href="/api-view/">Import info about photos</a>
+        </li>
+        <li>
+            <a href="/api/">Create, Delete, Edit, List of Photo</a>
+        </li>
+    </ul>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p}}
+            <input type="submit" value="Search">
+        </form>
+        {{ info }}
+        <h2>Photos</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>id</th>
+                    <th>Album Id</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in photos %}
+                <tr>
+                    <th>{{ forloop.counter }}</th>
+                    <td>{{ p.title }}</td>
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.album_id }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    </body>
+</html>
